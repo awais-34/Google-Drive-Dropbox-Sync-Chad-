@@ -1,0 +1,204 @@
+{
+  "name": "Google Drive: Poll & Download (Crypto)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -16
+      ],
+      "id": "9191ad57-3af4-40a9-b2a4-a1c1bb586c7f",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "returnAll": true,
+        "filter": {
+          "driveId": {
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "112JjdO3TyDrbvDNEHlTuz_DHFXWC72Ud",
+            "mode": "list",
+            "cachedResultName": "Crypto",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/112JjdO3TyDrbvDNEHlTuz_DHFXWC72Ud"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "557bc2b5-d316-4817-80a2-bd3ce46131b8",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "mdgau05AT1p7M7AI",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        80,
+        -16
+      ],
+      "id": "307bd2e7-2216-4eb5-8927-b8c2f9235057",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        336,
+        0
+      ],
+      "id": "7979ddf2-90c3-4bc3-9d38-aa48627e5965",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "mdgau05AT1p7M7AI",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "path": "=/Crypto/{{ $json.name }}",
+        "binaryData": true
+      },
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -192
+      ],
+      "id": "a7b6eefe-f5ec-4bb4-b144-4f7f5534247e",
+      "name": "Upload a file",
+      "notesInFlow": false,
+      "credentials": {
+        "dropboxOAuth2Api": {
+          "id": "AHznotql3ooyun8Z",
+          "name": "Dropbox account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-08-20T01:17:49.449+05:00",
+          "Readable date": "August 20th 2025, 1:17:49 am",
+          "Readable time": "1:17:49 am",
+          "Day of week": "Wednesday",
+          "Year": "2025",
+          "Month": "August",
+          "Day of month": "20",
+          "Hour": "01",
+          "Minute": "17",
+          "Second": "49",
+          "Timezone": "Asia/Karachi (UTC+05:00)"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Upload a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a60b4a38-b278-49e1-b1fd-f44ee9314eab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc7ea10fac5ba564f1b62ebd5fd495beff3409fd669afcd3579c130f93db1377"
+  },
+  "id": "XOK4lXe8Q6m3GCUx",
+  "tags": []
+}
