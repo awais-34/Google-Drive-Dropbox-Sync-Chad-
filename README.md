@@ -212,23 +212,23 @@ Example Paths:
 sequenceDiagram
     participant CRON as ⏰ Scheduler
     participant GD_S as 🔍 Google Drive (Search)
-    participant LOOP as 🔁 Loop
+    participant BATCH as 🔁 Batch Loop
     participant GD_D as 📥 Google Drive (Download)
     participant DB as ☁️ Dropbox
 
     CRON->>GD_S: Trigger: fetch all files in /Crypto
-    GD_S->>LOOP: Return file list [file1, file2, ... fileN]
-    
+    GD_S->>BATCH: Return file list [file1, file2, ... fileN]
+
     loop For each file
-        LOOP->>GD_D: Pass current file ID
+        BATCH->>GD_D: Pass current file ID
         GD_D->>GD_D: Fetch binary data
-        GD_D->>LOOP: Return binary in memory
-        LOOP->>DB: Upload binary → /Crypto/{filename}
-        DB-->>LOOP: ✅ Upload confirmed
-        LOOP->>LOOP: Next item in queue
+        GD_D->>BATCH: Return binary in memory
+        BATCH->>DB: Upload binary to /Crypto/filename
+        DB-->>BATCH: Upload confirmed
+        BATCH->>BATCH: Next item in queue
     end
 
-    Note over LOOP,DB: All files mirrored ✅
+    Note over BATCH,DB: All files mirrored
 ```
 
 ---
@@ -321,13 +321,11 @@ No cloud storage vendor lock-in. Files always exist in two separate cloud provid
 
 <div align="center">
 
-**Built by [Abdul Rehman](https://github.com/ar-rehman786)**
+**Built by [Awais Salamat](https://github.com/awais-34)**
 
-[![Gmail](https://img.shields.io/badge/Email-abdulrehmanhameed4321%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:abdulrehmanhameed4321@gmail.com)
+[![Gmail](https://img.shields.io/badge/Email-awais1salamat%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:awais1salamat@gmail.com)
 &nbsp;
-[![Slora AI](https://img.shields.io/badge/🚀_Slora_AI-sloraai.com-5D3EFF?style=for-the-badge)](https://www.sloraai.com/)
-&nbsp;
-[![GitHub](https://img.shields.io/badge/GitHub-ar--rehman786-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ar-rehman786)
+[![GitHub](https://img.shields.io/badge/GitHub-awais--34-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/awais-34)
 
 </div>
 
